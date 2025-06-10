@@ -22,28 +22,23 @@ Output:
 2
 */
 
-use std::collections::HashMap;
+use std::collections::HashSet;
 use std::io;
-
 
 fn main(){
 
+
     let mut n = String::new();
-    io::stdin().read_line(&mut n).unwrap();
-    let n:usize = n.trim().parse().unwrap(); 
+    io::stdin().read_line(& mut n).unwrap();
+    let _n:usize = n.parse().unwrap();
 
-    let mut mp = HashMap::new();
-    for _ in 0..n{
+    let mut value = String::new();
+    io::stdin().read_line(& mut value).unwrap();
 
-        let mut value = String::new();
-        io::stdin().read_line(&mut value).unwrap();
-        let value:usize = value.trim().parse().unwrap();
-        if  !mp.contains_key(&value) {
-            mp.insert(value,true);
-  
-        }
-    }
-    println!("Unique Values are : {}",mp.len())
+    let unique_values = value.trim().split_whitespace().map(|x| x.parse().unwrap()).collect();
 
-    
+
+    println!("{}",unique_values.len());
+
 }
+
