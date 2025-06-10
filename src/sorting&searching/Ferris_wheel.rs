@@ -25,42 +25,38 @@
 // Output:
 // 3
 use std::io;
-fn main(){
-
-let mut input = String::new();
-io::stdin().read_line(& mut input).unwrap();
-let parts:Vec<usize> = input.trim().split_whitespace().map(|x| x.parse().unwrap()).collect();
-
-let (n,maximum_weight) = (parts[0],parts[1] as i64);
-
-input.clear();
-io::stdin().read_line(&mut input).unwrap();
-let mut weights:Vec<i64>= input.trim().split_whitespace().map(|x| x.parse::<i64>().unwrap()).collect();
-
-
-weights.sort();
-// 4 10
-// 7 2 3 9
-
-//2 3 7 9
-
-
-let mut i=0;
-let mut gondola=0;
-let mut sum=0;
-
-while i<n{
-
-sum += weights[i];
-if sum > maximum_weight {
-    gondola+=1;
-    sum = weights[i];
-}
-i+=1;
-}
-if sum != 0 {gondola+=1};
-
-println!("{}",gondola);
-
-
+fn main() {
+    let mut input = String::new();
+    io::stdin().read_line(&mut input).unwrap();
+    let parts: Vec<usize> = input.trim().split_whitespace()
+        .map(|x| x.parse().unwrap())
+        .collect();
+    
+    let (n, maximum_weight) = (parts[0], parts[1] as i64);
+    
+    input.clear();
+    io::stdin().read_line(&mut input).unwrap();
+    let mut weights: Vec<i64> = input.trim().split_whitespace()
+        .map(|x| x.parse::<i64>().unwrap())
+        .collect();
+    
+    weights.sort(); // Sort weights in ascending order
+    
+    let mut gondolas = 0;
+    let mut left = 0;
+    let mut right = n - 1;
+    
+    while left <= right {
+        // If we can pair the heaviest with the lightest
+        if left < right && weights[left] + weights[right] <= maximum_weight {
+            left += 1;  // Move lightest pointer forward
+            right -= 1; // Move heaviest pointer backward
+        } else {
+            // Just take the heaviest child alone
+            right -= 1;
+        }
+        gondolas += 1;
+    }
+    
+    println!("{}", gondolas);
 }
