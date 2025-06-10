@@ -25,36 +25,45 @@
 // Output:
 // 3
 use std::io;
+
 fn main() {
     let mut input = String::new();
     io::stdin().read_line(&mut input).unwrap();
-    let parts: Vec<usize> = input.trim().split_whitespace()
+    let parts: Vec<i64> = input.trim().split_whitespace()
         .map(|x| x.parse().unwrap())
         .collect();
     
-    let (n, maximum_weight) = (parts[0], parts[1] as i64);
+    let n = parts[0];
+    let maximum_weight = parts[1];
     
     input.clear();
     io::stdin().read_line(&mut input).unwrap();
     let mut weights: Vec<i64> = input.trim().split_whitespace()
-        .map(|x| x.parse::<i64>().unwrap())
+        .map(|x| x.parse().unwrap())
         .collect();
     
-    weights.sort(); // Sort weights in ascending order
+    weights.sort();
     
     let mut gondolas = 0;
     let mut left = 0;
     let mut right = n - 1;
     
     while left <= right {
-        // If we can pair the heaviest with the lightest
-        if left < right && weights[left] + weights[right] <= maximum_weight {
-            left += 1;  // Move lightest pointer forward
-            right -= 1; // Move heaviest pointer backward
+        if left == right {
+            // Only one child left, they get their own gondola
+            gondolas += 1;
+            break;
+        }
+        
+        if weights[left as usize] + weights[right as usize] <= maximum_weight {
+            // Can pair lightest with heaviest
+            left += 1;
+            right -= 1;
         } else {
-            // Just take the heaviest child alone
+            // Heaviest child must ride alone
             right -= 1;
         }
+        
         gondolas += 1;
     }
     
